@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "private": false,
   "displayName": "homebridge-zigbee2mqtt",
   "name": "@home-connect/homebridge-zigbee2mqtt",
   "version": "1.0.0",
@@ -26,7 +26,6 @@
   "keywords": [
     "homebridge-plugin"
   ],
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^14.14.31",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
