@@ -6,18 +6,52 @@
     "type": "object",
     "properties": {
       "name": {
-        "title": "MQTT Address",
+        "title": "Name",
         "type": "string",
-        "default": "mqtt://127.0.0.1",
-        "minLength": 1,
-        "required": true
+        "placeholder": "Zigbee2Mqtt Name",
+        "default": "Zigbee2Mqtt"
       },
-      "port": {
-        "title": "Port",
+      "mqtt": {
+        "title": "MQTT Server",
+        "type": "string",
+        "placeholder": "127.0.0.1",
+        "description": "Defines the hostname or IP of the MQTT broker to connect to for MQTT-based automation. If not set, MQTT support is not started."
+      },
+      "portmqtt": {
+        "title": "MQTT Port",
         "type": "integer",
+        "placeholder": "1883",
         "default": 1883,
         "maximum": 65535,
-        "required": true
+        "description": "The port of the MQTT broker."
+      },
+      "tlsmqtt": {
+        "title": "MQTT TLS",
+        "type": "boolean",
+        "description": "Use TLS to connect to the MQTT broker."
+      },
+      "usermqtt": {
+        "title": "MQTT Username",
+        "type": "string",
+        "description": "The username used to connect to your MQTT broker. If not set, no authentication is used."
+      },
+      "passmqtt": {
+        "title": "MQTT Password",
+        "type": "string",
+        "description": "The password used to connect to your MQTT broker. If not set, no authentication is used."
+      },
+      "zigbee2mqtt": {
+        "type": "object",
+        "title": "Zigbee2Mqtt Settings",
+        "properties": {
+          "baseTopic": {
+            "title": "Base Topic",
+            "type": "string",
+            "default": "zigbee2mqtt",
+            "required": true,
+            "description": "zigbee2mqtt base topic"
+          }
+        }
       }
     }
   }
