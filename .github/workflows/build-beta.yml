@@ -49,6 +49,7 @@ jobs:
         with:
           node-version: 14 # use the minimum required version
           registry-url: https://registry.npmjs.org/
+          scope: '@home-connect'
       - name: Install dependencies    
         run: npm install
       
