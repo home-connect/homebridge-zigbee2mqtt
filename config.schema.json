@@ -1,15 +1,23 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "home-connect-homebridge-zigbee2mqtt",
   "pluginType": "platform",
   "singular": true,
   "schema": {
     "type": "object",
     "properties": {
       "name": {
-        "title": "Name",
+        "title": "MQTT Address",
         "type": "string",
-        "required": true,
-        "default": "Example Dynamic Platform"
+        "default": "mqtt://127.0.0.1",
+        "minLength": 1,
+        "required": true
+      },
+      "port": {
+        "title": "Port",
+        "type": "integer",
+        "default": 1883,
+        "maximum": 65535,
+        "required": true
       }
     }
   }

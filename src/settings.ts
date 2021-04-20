@@ -4,6 +4,6 @@
 export const PLATFORM_NAME = 'home-connect-homebridge-zigbee2mqtt';
 
 /**
-  * This must match the name of your plugin as defined the package.json
-  */
+ * This must match the name of your plugin as defined the package.json
+ */
 export const PLUGIN_NAME = '@home-connect/homebridge-zigbee2mqtt';
