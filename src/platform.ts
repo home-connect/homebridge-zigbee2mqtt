@@ -23,12 +23,9 @@ export class Zigbee2MqttPlatform implements DynamicPlatformPlugin {
 
   // this is used to track restored cached accessories
   public readonly accessories: PlatformAccessory[] = [];
-
-  constructor(
-    public readonly log: Logger,
-    public readonly config: PlatformConfig,
-    public readonly api: API,
-  ) {
+  public readonly config: CustomPlatformConfig & PlatformConfig;
+  constructor(public readonly log: Logger, config: PlatformConfig, public readonly api: API) {
+    this.config = config as CustomPlatformConfig & PlatformConfig;
     this.log.debug('Finished initializing platform:', this.config.name);
 
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
