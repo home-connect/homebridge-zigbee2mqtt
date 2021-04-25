@@ -18,6 +18,7 @@ import { CustomPlatformConfig } from './types/CustomPlatformConfig';
 import * as Mqqt from 'mqtt';
 import { MqttClient, Packet } from 'mqtt';
 import deviceInfo from './deviceInfo';
+import ZigbeeContext from './ZigbeeContext';
 /**
  * HomebridgePlatform
  * This class is the main constructor for your plugin, this is where you should
@@ -28,7 +29,7 @@ export class Zigbee2MqttPlatform implements DynamicPlatformPlugin {
   public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
 
   // this is used to track restored cached accessories
-  public readonly accessories: PlatformAccessory[] = [];
+  public readonly accessories: PlatformAccessory<ZigbeeContext>[] = [];
   public readonly config: CustomPlatformConfig & PlatformConfig;
 
   private mqttClient: Mqqt.MqttClient | undefined;
@@ -53,7 +54,7 @@ export class Zigbee2MqttPlatform implements DynamicPlatformPlugin {
    * This function is invoked when homebridge restores cached accessories from disk at startup.
    * It should be used to setup event handlers for characteristics and update respective values.
    */
-  configureAccessory(accessory: PlatformAccessory) {
+  configureAccessory(accessory: PlatformAccessory<ZigbeeContext>) {
     this.log.debug('Configuring accessory %s', accessory.displayName);
 
     accessory.on(PlatformAccessoryEvent.IDENTIFY, () => {
@@ -65,16 +66,13 @@ export class Zigbee2MqttPlatform implements DynamicPlatformPlugin {
   }
 
   addAccessory(device: deviceInfo) {
+    const uuid = this.api.hap.uuid.generate(device.ieee_address);
+    this.log.debug(uuid);
     return;
   }
 
-  removeAccessories() {
-    // we don't have any special identifiers, we just remove all our accessories
-
-    this.log.info('Removing all accessories');
-
-    this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, this.accessories);
-    this.accessories.splice(0, this.accessories.length); // clear out the array
+  removeAccessory(accessory: PlatformAccessory<ZigbeeContext>) {
+    return;
   }
 
   // mqtt messages
@@ -93,6 +91,11 @@ export class Zigbee2MqttPlatform implements DynamicPlatformPlugin {
     // Filter only supported devices.
     devices = devices.filter((f) => f.supported && f.definition && f.definition.exposes);
 
+    const removedAccessories = this.accessories.filter(
+      (a) =>
+        devices.filter((d) => d.ieee_address === a.context.deviceInfo.ieee_address).length === 0,
+    );
+
     devices.forEach((device) => {
       this.log.debug(
         'Found device %s (%s) that exposes %s',
@@ -102,6 +105,15 @@ export class Zigbee2MqttPlatform implements DynamicPlatformPlugin {
       );
       this.addAccessory(device);
     });
-    return;
+
+    removedAccessories.forEach((accessory) => {
+      this.log.debug(
+        'Removing accessory %s (%s) that exposes %s',
+        accessory.context.deviceInfo.friendly_name,
+        accessory.context.deviceInfo.ieee_address,
+        accessory.context.deviceInfo.definition?.exposes.map((s) => s.type).join(','),
+      );
+      this.removeAccessory(accessory);
+    });
   }
 }
