@@ -1,5 +1,5 @@
 export type CustomPlatformConfig = {
-  mqtt: string;
+  mqttaddress: string;
   portmqtt: number;
   tlsmqtt: boolean;
   usermqtt: string;

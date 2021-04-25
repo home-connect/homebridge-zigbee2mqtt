@@ -11,7 +11,7 @@
         "placeholder": "Zigbee2Mqtt Name",
         "default": "Zigbee2Mqtt"
       },
-      "mqtt": {
+      "mqttaddress": {
         "title": "MQTT Server",
         "type": "string",
         "placeholder": "127.0.0.1",
